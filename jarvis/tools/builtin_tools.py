@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
 
 from jarvis.automation.app_controller import AppController
 from jarvis.automation.developer import DeveloperAutomation
@@ -14,7 +13,6 @@ from jarvis.filesystem.operations import FileSystemManager
 from jarvis.filesystem.organizer import DirectoryOrganizer, DuplicateFinder
 from jarvis.memory.knowledge_store import KnowledgeStore
 from jarvis.memory.utilities_store import UtilitiesStore
-from jarvis.security.emergency import CancellationToken
 from jarvis.security.policy import RiskLevel
 from jarvis.system.controls import SystemController
 from jarvis.system.monitor import SystemMonitor

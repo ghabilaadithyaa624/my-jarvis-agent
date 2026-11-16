@@ -248,9 +248,12 @@ class SecurityGate:
             return PermissionCheckResult(PermissionDecision.ALLOW, RiskLevel.SAFE, "Searching permitted roots.")
 
         if tool_name == "create_file":
+            # Fail-closed: an LLM may set overwrite=true, but a human must still
+            # approve clobbering an existing user file. `allow_overwrite` may only
+            # be relaxed when the user explicitly disables the confirmation policy.
             _, pcheck = self.path_guard.check_write(
                 self.resolve_tool_path(str(args.get("path", ""))),
-                allow_overwrite=bool(args.get("overwrite", False)),
+                allow_overwrite=not self.cfg.require_confirmation_for_overwrite,
             )
             return pcheck
 

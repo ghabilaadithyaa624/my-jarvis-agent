@@ -69,3 +69,17 @@ include = ["jarvis*"]
 testpaths = ["jarvis/tests"]
 python_files = ["test_*.py"]
 addopts = "-q --tb=short"
+
+[tool.ruff]
+# Minimal, stable rule set: real errors only (syntax errors + undefined names +
+# unused imports). Style churn is deliberately not enforced.
+target-version = "py310"
+line-length = 120
+exclude = [".venv", "venv", "build", "dist", "eval/results"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"jarvis/tests/*" = ["F401"]

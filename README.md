@@ -1,5 +1,7 @@
 # JARVIS PERSONAL AI
 
+[![CI](https://github.com/ghabilaadithyaa624/my-jarvis-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/ghabilaadithyaa624/my-jarvis-agent/actions/workflows/ci.yml)
+
 A complete, privacy-first, **100% local personal AI voice operator and desktop agent** engineered for **Windows 11** and tuned specifically for **Intel Core i5-13420H + NVIDIA RTX 3050 (6 GB VRAM) + 16 GB RAM + 512 GB NVMe SSD**.
 
 JARVIS connects exclusively to your local **Ollama** runtime (`127.0.0.1:11434`), listens offline via **faster-whisper** + **AdaptiveVAD** + **openWakeWord**, speaks offline via **Piper Neural TTS** (with automatic Windows 11 **SAPI5** fallback), supports **English** and **Tamil (தமிழ்)**, enforces strict permission & confirmation gates with a tamper-evident **SHA-256 audit log**, and executes **41 verified desktop, file, system, browser, developer, Blender, and personal utility tools** through a modern **PySide6** dark HUD.

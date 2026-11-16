@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import html
 from datetime import datetime
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
