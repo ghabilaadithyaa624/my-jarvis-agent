@@ -1,0 +1,124 @@
+# ============================================================================
+# JARVIS PERSONAL AI — Default Configuration
+# Target Hardware: Windows 11 | i5-13420H | RTX 3050 6GB VRAM | 16GB RAM | NVMe
+# Privacy Policy: 100% Local. Zero mandatory cloud services.
+# ============================================================================
+
+ollama:
+  base_url: "http://127.0.0.1:11434"
+  preferred_model: ""          # Auto-selects best installed 6GB-VRAM-compatible model
+  fallback_models:
+    - "qwen2.5:7b"
+    - "qwen2.5:7b-instruct"
+    - "llama3.1:8b"
+    - "qwen2.5:3b"
+    - "llama3.2:3b"
+    - "mistral:7b"
+    - "phi3:mini"
+    - "gemma2:2b"
+  temperature: 0.1
+  top_p: 0.9
+  num_ctx: 4096                # Fits comfortably in 6GB VRAM alongside Q4_K_M 7B weights
+  low_vram_num_ctx: 2048       # Auto-applied when Blender or other GPU apps reduce free VRAM
+  max_output_tokens: 512
+  keep_alive: "5m"             # Releases VRAM automatically after 5 minutes idle
+  unload_previous_on_switch: true
+  connect_timeout_sec: 5.0
+  read_timeout_sec: 90.0
+  max_retries: 2
+  enforce_local_only: true     # NEVER allows silent fallback to cloud endpoints
+
+stt:
+  backend: "faster_whisper"
+  model_size: "small"          # CTranslate2 int8 on i5-13420H CPU: ~0.4s latency, 0MB GPU VRAM
+  device: "cpu"
+  compute_type: "int8"
+  sample_rate: 16000
+  listen_mode: "wake_word"     # wake_word | continuous | push_to_talk
+  vad_energy_threshold_db: -36.0
+  vad_silence_duration_sec: 0.6
+  vad_min_speech_sec: 0.30
+  max_utterance_sec: 25.0
+  followup_window_sec: 8.0
+  barge_in_enabled: true
+  use_openwakeword: true
+  openwakeword_model: "hey_jarvis"
+  openwakeword_threshold: 0.55
+  idle_unload_sec: 600
+
+tts:
+  backend: "auto"              # Prefers Piper neural TTS -> falls back to offline Windows SAPI5
+  speed: 1.5
+  volume: 0.85
+  muted: false
+  max_spoken_chars: 280
+  announce_code_omission: true
+
+languages:
+  en:
+    code: "en"
+    display_name: "English"
+    whisper_code: "en"
+    wake_phrases: ["hey jarvis", "ok jarvis", "okay jarvis", "jarvis"]
+    piper_voice: "en_GB-alan-medium"
+    sapi_voice_hint: "David|Zira|Hazel|George|English"
+    system_prompt_hint: "Respond clearly and concisely in natural English."
+  ta:
+    code: "ta"
+    display_name: "Tamil (தமிழ்)"
+    whisper_code: "ta"
+    wake_phrases: ["ஜார்விஸ்", "ஹே ஜார்விஸ்", "hey jarvis", "jarvis"]
+    piper_voice: "ta_IN-valluvar-medium"
+    sapi_voice_hint: "Valluvar|Heera|Tamil"
+    system_prompt_hint: "Respond naturally in Tamil (தமிழ்), keeping technical terms clear."
+
+resources:
+  gpu_vram_total_mb: 6144
+  gpu_vram_reserve_os_mb: 900
+  gpu_vram_min_free_for_cuda_stt_mb: 2000
+  ram_total_mb: 16384
+  ram_warn_percent: 85.0
+  cpu_warn_percent: 90.0
+  telemetry_interval_sec: 3.0
+  cpu_threads_stt: 4
+
+agent:
+  max_steps_per_task: 6
+  max_retries_per_step: 2
+  step_timeout_sec: 30.0
+  task_timeout_sec: 120.0
+  max_history_messages: 12
+  enable_fast_path: true
+  active_language: "en"
+
+security:
+  permitted_directories: []    # Auto-populated with Desktop, Documents, Downloads, Projects, ~/.jarvis
+  permitted_drives: ["C:", "D:"]
+  require_confirmation_for_delete: true
+  require_confirmation_for_overwrite: true
+  require_confirmation_for_install: true
+  require_confirmation_for_admin: true
+  require_confirmation_for_process_stop: true
+  require_confirmation_for_unlisted_app: true
+  require_confirmation_for_sensitive_web: true
+  confirmation_timeout_sec: 60.0
+  max_file_read_bytes: 2000000
+  max_search_results: 100
+
+browser:
+  default_search_engine: "duckduckgo"
+  playwright_headless: false
+  playwright_browser: "chromium"
+  navigation_timeout_ms: 20000
+
+gui:
+  window_title: "JARVIS PERSONAL AI — Local Desktop Operator"
+  window_width: 1200
+  window_height: 700
+  minimize_to_tray: true
+  orb_fps: 24
+  show_thoughts: true
+
+camera:
+  enabled: false
+  device_index: 0

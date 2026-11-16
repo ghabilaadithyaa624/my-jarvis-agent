@@ -1,0 +1,72 @@
+# ============================================================================
+# JARVIS Model Catalog (Decoupled from Application Logic)
+# Advises VRAM suitability for NVIDIA RTX 3050 6GB + 16GB RAM.
+# Any locally installed Ollama chat model works even if not listed here.
+# ============================================================================
+
+embedding_only_patterns:
+  - "embed"
+  - "minilm"
+  - "bge-"
+  - "e5-"
+  - "paraphrase"
+  - "snowflake-arctic-embed"
+  - "mxbai-embed"
+  - "nomic-embed"
+
+recommended_profiles:
+  "qwen2.5:7b":
+    tier: "primary_6gb"
+    estimated_vram_mb: 4800
+    recommended_num_ctx: 4096
+    structured_json_quality: "excellent"
+    multilingual_tamil: "good"
+    notes: "Top overall operator model for RTX 3050 6GB — fast, accurate JSON planning."
+
+  "llama3.1:8b":
+    tier: "primary_6gb"
+    estimated_vram_mb: 5050
+    recommended_num_ctx: 4096
+    structured_json_quality: "excellent"
+    multilingual_tamil: "moderate"
+    notes: "Strong general reasoning & instruction following; partial CPU offload if VRAM tight."
+
+  "qwen2.5:3b":
+    tier: "coexist_gpu"
+    estimated_vram_mb: 2200
+    recommended_num_ctx: 4096
+    structured_json_quality: "good"
+    multilingual_tamil: "moderate"
+    notes: "Ideal while Blender, games, or video editors share the RTX 3050 6GB GPU."
+
+  "llama3.2:3b":
+    tier: "coexist_gpu"
+    estimated_vram_mb: 2300
+    recommended_num_ctx: 4096
+    structured_json_quality: "good"
+    multilingual_tamil: "basic"
+    notes: "Ultra-low-latency voice operator model (<150ms first token on RTX 3050)."
+
+  "qwen2.5-coder:7b":
+    tier: "developer_6gb"
+    estimated_vram_mb: 4800
+    recommended_num_ctx: 4096
+    structured_json_quality: "excellent"
+    multilingual_tamil: "basic"
+    notes: "Best choice for Python scripting, log analysis, and VS Code workflows."
+
+  "mistral:7b":
+    tier: "primary_6gb"
+    estimated_vram_mb: 4600
+    recommended_num_ctx: 4096
+    structured_json_quality: "good"
+    multilingual_tamil: "basic"
+    notes: "Reliable 7B instruct model within 6GB VRAM budget."
+
+  "gemma2:9b":
+    tier: "hybrid_offload"
+    estimated_vram_mb: 5800
+    recommended_num_ctx: 2048
+    structured_json_quality: "good"
+    multilingual_tamil: "good"
+    notes: "Strong Tamil & English; spills slightly to 16GB RAM on 6GB GPU."

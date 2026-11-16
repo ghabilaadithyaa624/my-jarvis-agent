@@ -1,0 +1,13 @@
+# Local Voice Engine (optimized for CPU int8 so 6GB VRAM stays free for Ollama)
+faster-whisper>=1.0.3
+sounddevice>=0.4.6
+openwakeword>=0.6.0
+piper-tts>=1.2.0
+pyttsx3>=2.90
+
+# Browser Automation (after installing, run: python -m playwright install chromium)
+playwright>=1.43.0
+
+# Testing & Windows Packaging
+pytest>=8.0.0
+pyinstaller>=6.6.0
