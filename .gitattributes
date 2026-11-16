@@ -1,0 +1,31 @@
+# Normalise line endings in the object database, then let the platform decide
+# on checkout. Windows launcher scripts must keep CRLF so cmd.exe / PowerShell
+# (and older editors) never see a truncated script.
+* text=auto
+
+*.ps1   text eol=crlf
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+*.vbs   text eol=crlf
+
+*.py    text eol=lf
+*.md    text eol=lf
+*.toml  text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.json  text eol=lf
+*.jsonl text eol=lf
+
+# Binary assets — never convert, never diff as text
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.wav   binary
+*.mp3   binary
+*.onnx  binary
+*.zip   binary
+*.exe   binary
+*.db    binary
+*.sqlite binary
