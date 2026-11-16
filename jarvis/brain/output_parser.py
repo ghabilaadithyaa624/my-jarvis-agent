@@ -51,14 +51,27 @@ class StructuredOutputParser:
         thoughts: List[str] = [m.group(1).strip() for m in _THINK_RE.finditer(text)]
         cleaned = _THINK_RE.sub("", text).strip()
 
+        # Most specific structured rejection seen so far (e.g. "Unknown tool 'x'").
+        # Small models often emit several JSON-ish fragments; the informative error
+        # from the best candidate must not be swallowed by a later, less useful one.
+        best_rejection: Optional[ParsedAgentStep] = None
+
+        def _consider(step: ParsedAgentStep) -> Optional[ParsedAgentStep]:
+            nonlocal best_rejection
+            if step.kind != "parse_error":
+                return step
+            if best_rejection is None or (not best_rejection.error and step.error):
+                best_rejection = step
+            return None
+
         # Check Qwen/Hermes <tool_call>{...}</tool_call> wrapper first
         xml_match = _TOOL_CALL_XML_RE.search(cleaned)
         if xml_match:
             obj = self._try_load_json(xml_match.group(1))
             if isinstance(obj, dict):
-                step = self._interpret_dict(obj, thoughts, raw_text, valid_tools)
-                if step.kind != "parse_error":
-                    return step
+                accepted = _consider(self._interpret_dict(obj, thoughts, raw_text, valid_tools))
+                if accepted is not None:
+                    return accepted
 
         # Try direct JSON, fenced JSON, and balanced brace extraction
         candidates: List[str] = [cleaned]
@@ -71,9 +84,12 @@ class StructuredOutputParser:
         for cand in candidates:
             obj = self._try_load_json(cand)
             if isinstance(obj, dict):
-                step = self._interpret_dict(obj, thoughts, raw_text, valid_tools)
-                if step.kind != "parse_error":
-                    return step
+                accepted = _consider(self._interpret_dict(obj, thoughts, raw_text, valid_tools))
+                if accepted is not None:
+                    return accepted
+
+        if best_rejection is not None and best_rejection.error:
+            return best_rejection
 
         # If model answered in plain prose without JSON envelope, return parse_error so
         # the executor can decide whether to re-prompt for JSON or treat as answer.

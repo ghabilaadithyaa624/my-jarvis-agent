@@ -4,9 +4,8 @@ from __future__ import annotations
 
 import sys
 import threading
-from typing import Optional
 
-from PySide6.QtCore import QObject, Qt, Signal
+from PySide6.QtCore import QObject, Signal
 from PySide6.QtWidgets import (
     QApplication,
     QComboBox,

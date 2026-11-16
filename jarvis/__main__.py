@@ -15,6 +15,7 @@ from jarvis.app.cli import (
 )
 from jarvis.app.controller import JarvisController
 from jarvis.config.loader import load_config
+from jarvis.dependencies import friendly_missing_dependency_message
 from jarvis.interface import is_gui_available
 
 
@@ -38,6 +39,18 @@ def build_arg_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """CLI entrypoint that turns missing optional packages into readable advice."""
+    try:
+        return _run(argv)
+    except ModuleNotFoundError as exc:
+        hint = friendly_missing_dependency_message(getattr(exc, "name", None))
+        if hint is None:
+            raise
+        print("\n" + hint + "\n", file=sys.stderr)
+        return 2
+
+
+def _run(argv: list[str] | None = None) -> int:
     args = build_arg_parser().parse_args(argv)
 
     if args.self_test:

@@ -203,3 +203,36 @@ def sandbox_config(tmp_path: Path, mock_ollama) -> JarvisConfig:
         str((data_dir / "screenshots").resolve()),
     ]
     return cfg
+
+
+@pytest.fixture
+def security_gate(sandbox_config, tmp_path: Path):
+    """A bare SecurityGate wired to a real hash-chained audit log (no tools)."""
+    from jarvis.logs.logger import AuditLogger
+    from jarvis.security.emergency import EmergencyStopController
+    from jarvis.security.gate import SecurityGate
+
+    workspace = sandbox_config.resolved_data_dir() / "workspace"
+    workspace.mkdir(parents=True, exist_ok=True)
+    audit = AuditLogger(sandbox_config.resolved_data_dir() / "logs" / "audit.jsonl")
+    gate = SecurityGate(
+        security_cfg=sandbox_config.security,
+        audit_logger=audit,
+        emergency=EmergencyStopController(),
+        confirmation_handler=None,
+        workspace_dir=workspace,
+    )
+    gate.audit_log = audit  # convenience handle for assertions
+    return gate
+
+
+@pytest.fixture
+def controller(sandbox_config):
+    """A fully wired JarvisController with no background services and no confirmation handler."""
+    from jarvis.app.controller import JarvisController
+
+    ctrl = JarvisController(sandbox_config, start_background_services=False)
+    try:
+        yield ctrl
+    finally:
+        ctrl.shutdown()

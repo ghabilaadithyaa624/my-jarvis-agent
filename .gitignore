@@ -28,7 +28,7 @@ Desktop.ini
 
 # Logs & temp audio
 *.log
-logs/
+/logs/
 *.wav
 *.mp3
 tmp/

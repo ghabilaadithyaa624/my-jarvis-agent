@@ -10,11 +10,12 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 dependencies = [
-    "httpx>=0.26.0",
-    "pydantic>=2.5.0",
-    "psutil>=5.9.8",
-    "PyYAML>=6.0.1",
-    "numpy>=1.26.0",
+    # Core only: everything else is an opt-in extra below.
+    "httpx>=0.26.0,<1.0",
+    "pydantic>=2.5.0,<3.0",
+    "psutil>=5.9.8,<8.0",
+    "PyYAML>=6.0.1,<7.0",
+    "numpy>=1.26.0,<3.0",
 ]
 
 [project.optional-dependencies]
@@ -44,9 +45,15 @@ documents = [
 browser = [
     "playwright>=1.43.0",
 ]
+eval = [
+    "jiwer>=3.0.0,<5.0",
+]
 dev = [
     "pytest>=8.0.0",
+    "ruff>=0.6.0",
     "pyinstaller>=6.6.0",
+    # Used by the .docx round-trip test in jarvis/tests/test_phase4_apps_and_filesystem.py
+    "python-docx>=1.1.0",
 ]
 full = [
     "jarvis-personal-ai[gui,voice,windows,documents,browser]",
@@ -65,3 +72,17 @@ include = ["jarvis*"]
 testpaths = ["jarvis/tests"]
 python_files = ["test_*.py"]
 addopts = "-q --tb=short"
+
+[tool.ruff]
+# Minimal, stable rule set: real errors only (syntax errors + undefined names +
+# unused imports). Style churn is deliberately not enforced.
+target-version = "py310"
+line-length = 120
+exclude = [".venv", "venv", "build", "dist", "eval/results"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"jarvis/tests/*" = ["F401"]

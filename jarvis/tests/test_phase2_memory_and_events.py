@@ -103,7 +103,7 @@ def test_personal_utilities_notes_todos_reminders_timers_and_history(tmp_path: P
         assert len(fired_reminders) == 1
 
         # Timers (start, list, fire, cancel)
-        t1 = util.start_timer(1.0, label="Tea")
+        util.start_timer(1.0, label="Tea")
         t2 = util.start_timer(60.0, label="Pomodoro")
         assert len(util.list_timers()) == 2
         assert util.cancel_timer(t2["id"]) is True
