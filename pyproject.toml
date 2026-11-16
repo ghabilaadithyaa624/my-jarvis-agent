@@ -45,6 +45,9 @@ documents = [
 browser = [
     "playwright>=1.43.0",
 ]
+eval = [
+    "jiwer>=3.0.0,<5.0",
+]
 dev = [
     "pytest>=8.0.0",
     "ruff>=0.6.0",

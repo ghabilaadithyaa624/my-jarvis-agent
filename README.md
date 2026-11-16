@@ -157,3 +157,50 @@ scripts/
 ```
 
 See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the complete hardware VRAM budget, 9-stage execution pipeline, security model, and verification matrix.
+
+---
+
+## Results
+
+Every number in this section comes from the harness in [`eval/`](eval/) — nothing here is estimated.
+Cells marked **TBD** are deliberately unfilled: they are produced by running the scripts on real
+hardware (see [`eval/README.md`](eval/README.md)) and pasting the generated Markdown table.
+
+### Tool calling & latency (real `IntentClassifier` → `TaskPlanner` → local model, nothing executed)
+
+| Model | Cases | Tool selection | Arguments | End-to-end | JSON valid | p50 latency | p95 latency | p50 TTFT | p95 TTFT |
+|---|---|---|---|---|---|---|---|---|---|
+| `qwen2.5:7b` | 83 | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| `qwen2.5:3b` | 83 | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| `llama3.1:8b` | 83 | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| Deterministic fast path (no LLM) | 83 | TBD | — | — | — | — | — | — | — |
+
+Run it with:
+
+```powershell
+python eval/run_tool_eval.py --models qwen2.5:7b,qwen2.5:3b --out-dir eval/results
+```
+
+### Security gate (offline, no Ollama required)
+
+| Suite | Cases | Hard blocked | Escalated to confirmation | Silently allowed | False positives on benign controls |
+|---|---|---|---|---|---|
+| Destructive commands, path escapes, prompt injection | 57 | TBD | TBD | TBD | TBD |
+
+```powershell
+python eval/run_security_eval.py
+```
+
+### Speech-to-text accuracy (faster-whisper `small`, CPU int8)
+
+| Language | Clips | Mean WER | Corpus WER | Mean CER |
+|---|---|---|---|---|
+| English | 10 planned | TBD | TBD | TBD |
+| Tamil (தமிழ்) | 10 planned | TBD | TBD | TBD |
+
+```powershell
+python eval/run_stt_eval.py --audio-dir eval/stt_clips/en --lang en
+python eval/run_stt_eval.py --audio-dir eval/stt_clips/ta --lang ta
+```
+
+Recording instructions for the 20 reference clips: [`eval/stt_clips/README.md`](eval/stt_clips/README.md).

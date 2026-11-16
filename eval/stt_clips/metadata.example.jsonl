@@ -1,0 +1,20 @@
+{"file": "en/01_open_vscode.wav", "text": "Jarvis, open VS Code", "language": "en"}
+{"file": "en/02_laptop_performance.wav", "text": "Jarvis, check my laptop performance", "language": "en"}
+{"file": "en/03_volume_45.wav", "text": "Jarvis, set the volume to 45 percent", "language": "en"}
+{"file": "en/04_organize_downloads.wav", "text": "Jarvis, organize my Downloads folder", "language": "en"}
+{"file": "en/05_find_blender.wav", "text": "Jarvis, find my Blender project", "language": "en"}
+{"file": "en/06_screenshot.wav", "text": "Jarvis, take a screenshot", "language": "en"}
+{"file": "en/07_time.wav", "text": "Jarvis, what time is it", "language": "en"}
+{"file": "en/08_timer_ten.wav", "text": "Jarvis, set a timer for ten minutes", "language": "en"}
+{"file": "en/09_web_search.wav", "text": "Jarvis, search the web for python asyncio tutorial", "language": "en"}
+{"file": "en/10_disk_space.wav", "text": "Jarvis, how much disk space is left", "language": "en"}
+{"file": "ta/01_time.wav", "text": "ஜார்விஸ், நேரம் என்ன", "language": "ta"}
+{"file": "ta/02_screenshot.wav", "text": "ஜார்விஸ், ஸ்கிரீன்ஷாட் எடு", "language": "ta"}
+{"file": "ta/03_open_notepad.wav", "text": "ஜார்விஸ், நோட்பேடைத் திற", "language": "ta"}
+{"file": "ta/04_organize_downloads.wav", "text": "ஜார்விஸ், டவுன்லோட்ஸ் கோப்புறையை ஒழுங்குபடுத்து", "language": "ta"}
+{"file": "ta/05_volume_50.wav", "text": "ஜார்விஸ், வால்யூமை ஐம்பது சதவீதமாக வை", "language": "ta"}
+{"file": "ta/06_laptop_specs.wav", "text": "ஜார்விஸ், என் லேப்டாப் ஸ்பெக்களைச் சொல்", "language": "ta"}
+{"file": "ta/07_timer_ten.wav", "text": "ஜார்விஸ், பத்து நிமிட டைமர் வை", "language": "ta"}
+{"file": "ta/08_find_blender.wav", "text": "ஜார்விஸ், பிளெண்டர் திட்டத்தைக் கண்டுபிடி", "language": "ta"}
+{"file": "ta/09_date.wav", "text": "ஜார்விஸ், இன்று என்ன தேதி", "language": "ta"}
+{"file": "ta/10_desktop_files.wav", "text": "ஜார்விஸ், டெஸ்க்டாப் கோப்புகளைக் காட்டு", "language": "ta"}
