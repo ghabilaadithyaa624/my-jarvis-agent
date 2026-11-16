@@ -82,9 +82,30 @@ def test_path_on_a_different_drive_is_denied(security_gate):
     assert check.decision == PermissionDecision.DENY
 
 
-def test_drive_search_still_requires_drive_or_directory_membership(security_gate):
-    """`allow_drive_search` must not become an unconditional allow."""
+@pytest.mark.skipif(os.name != "nt", reason="drive letters are Windows-only")
+def test_drive_search_allows_only_configured_drives(security_gate):
+    """On Windows `search_files` may scan a configured drive, and nothing else."""
     gate = security_gate
+    gate.cfg.permitted_drives = ["C:"]
+    _, allowed = gate.path_guard.check_read("C:\\Users\\Public\\scan_me.txt", allow_drive_search=True)
+    assert allowed.decision == PermissionDecision.ALLOW
+
+    gate.cfg.permitted_drives = []  # drive-level exemption removed
+    _, denied = gate.path_guard.check_read("C:\\Users\\Public\\scan_me.txt", allow_drive_search=True)
+    assert denied.decision == PermissionDecision.DENY
+
+
+def test_drive_search_still_requires_drive_or_directory_membership(security_gate):
+    """`allow_drive_search` must never become an unconditional allow.
+
+    With no drive-level exemption configured this must deny on every platform:
+    on POSIX it falls back to strict directory membership, on Windows the drive
+    is simply not in ``permitted_drives``. (On Windows a path such as
+    ``/definitely/...`` resolves onto ``C:``, so the exemption must be cleared
+    first for the assertion to mean the same thing on both platforms.)
+    """
+    gate = security_gate
+    gate.cfg.permitted_drives = []
     _, check = gate.path_guard.check_read("/definitely/not/permitted/file.txt", allow_drive_search=True)
     assert check.decision == PermissionDecision.DENY
 
