@@ -1,22 +1,19 @@
-# Core runtime dependencies (lightweight, cross-platform, zero cloud SDKs)
-httpx>=0.26.0
-pydantic>=2.5.0
-psutil>=5.9.8
-PyYAML>=6.0.1
-numpy>=1.26.0
-
-# Desktop GUI (JARVIS Dark HUD)
-PySide6>=6.6.0
-
-# Safe file deletion, screenshots & document reading
-Pillow>=10.2.0
-mss>=9.0.1
-Send2Trash>=1.8.3
-python-docx>=1.1.0
-pypdf>=4.1.0
-openpyxl>=3.1.2
-
-# Windows 11 native audio & COM integration (auto-skipped on non-Windows)
-pycaw>=20240210; sys_platform == "win32"
-comtypes>=1.4.0; sys_platform == "win32"
-pywin32>=306; sys_platform == "win32"
+# ============================================================================
+# JARVIS PERSONAL AI — CORE runtime dependencies only.
+#
+# This file intentionally contains just the five packages needed to run the
+# agent core (config, Ollama client, security gate, tools, memory, CLI):
+#
+#     pip install -r requirements.txt
+#     pip install -e .            # same thing, via pyproject.toml
+#
+# GUI, voice, documents, Windows-system and browser features are optional and
+# live in the extras defined in pyproject.toml (see requirements-optional.txt
+# for the flat list, or install everything with `pip install -e .[full]`).
+# No cloud SDK, telemetry, or analytics package is ever required.
+# ============================================================================
+httpx>=0.26.0,<1.0
+pydantic>=2.5.0,<3.0
+psutil>=5.9.8,<8.0
+PyYAML>=6.0.1,<7.0
+numpy>=1.26.0,<3.0

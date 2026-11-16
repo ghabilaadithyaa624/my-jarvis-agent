@@ -1,13 +1,49 @@
-# Local Voice Engine (optimized for CPU int8 so 6GB VRAM stays free for Ollama)
-faster-whisper>=1.0.3
-sounddevice>=0.4.6
-openwakeword>=0.6.0
-piper-tts>=1.2.0
-pyttsx3>=2.90
+# ============================================================================
+# JARVIS PERSONAL AI — OPTIONAL feature dependencies (flat mirror of the
+# pyproject.toml extras, grouped by extra name).
+#
+# Recommended: let pip resolve the extras so platform markers are respected:
+#
+#     pip install -e .[gui]          # PySide6 dark HUD
+#     pip install -e .[voice]        # faster-whisper, Piper, wake word, mic
+#     pip install -e .[windows]      # WASAPI volume, screenshots, Recycle Bin
+#     pip install -e .[documents]    # .docx / .pdf / .xlsx readers
+#     pip install -e .[browser]      # Playwright automation
+#     pip install -e .[dev]          # pytest, ruff, pyinstaller
+#     pip install -e .[full]         # everything a full Windows 11 install needs
+#
+# This file is only for environments that cannot use extras; it is NOT
+# installed by `requirements.txt` and the core app runs fine without it.
+# Nothing here is required for the 100% local core agent to work.
+# ============================================================================
 
-# Browser Automation (after installing, run: python -m playwright install chromium)
-playwright>=1.43.0
+# --- extra: gui -------------------------------------------------------------
+PySide6>=6.6.0                       # Dark HUD (falls back to --cli when absent)
 
-# Testing & Windows Packaging
+# --- extra: voice -----------------------------------------------------------
+faster-whisper>=1.0.3                # Offline STT, CPU int8 so all 6 GB VRAM stays for Ollama
+sounddevice>=0.4.6                   # Microphone capture & speaker playback
+openwakeword>=0.6.0                  # Offline "Hey Jarvis" / "ஜார்விஸ்" wake word
+piper-tts>=1.2.0                     # Offline neural TTS (English + Tamil voices)
+pyttsx3>=2.90                        # Windows SAPI5 fallback voice
+
+# --- extra: windows ---------------------------------------------------------
+pycaw>=20240210; sys_platform == "win32"      # WASAPI master volume
+comtypes>=1.4.0; sys_platform == "win32"      # COM plumbing for pycaw
+pywin32>=306; sys_platform == "win32"         # Win32 window focus / process APIs
+mss>=9.0.1                           # Fast multi-monitor screenshots
+Pillow>=10.2.0                       # Screenshot verification helpers
+Send2Trash>=1.8.3                    # Recycle-Bin deletion instead of hard delete
+
+# --- extra: documents -------------------------------------------------------
+python-docx>=1.1.0                   # Read .docx
+pypdf>=4.1.0                         # Read .pdf
+openpyxl>=3.1.2                      # Read .xlsx
+
+# --- extra: browser ---------------------------------------------------------
+playwright>=1.43.0                   # Lazy-loaded automation; then: python -m playwright install chromium
+
+# --- extra: dev -------------------------------------------------------------
 pytest>=8.0.0
+ruff>=0.6.0
 pyinstaller>=6.6.0

@@ -20,25 +20,41 @@ JARVIS connects exclusively to your local **Ollama** runtime (`127.0.0.1:11434`)
   ollama pull qwen2.5:3b
   ```
 
-### 2. Automated Non-Destructive Setup
-Open PowerShell in the project folder and run:
+### 2. Install
+JARVIS ships as a **small core** plus optional feature extras, so you only pay for what you use:
+
 ```powershell
-# Core + PySide6 GUI + Offline Voice + English Piper Neural Voice
-powershell -ExecutionPolicy Bypass -File scripts\setup_windows.ps1 -IncludeVoice -DownloadEnglishVoice
+# A) Core only (terminal operator + Ollama + security + tools + memory).
+#    ~5 packages, no GUI, no microphone, works on any OS.
+pip install -e .
 
-# Also download offline Tamil neural voice (ta_IN-valluvar-medium) and Playwright Chromium:
-powershell -ExecutionPolicy Bypass -File scripts\setup_windows.ps1 -IncludeVoice -IncludePlaywright -DownloadEnglishVoice -DownloadTamilVoice
+# B) Full Windows 11 install (recommended for the desktop HUD + voice):
+pip install -e ".[full]"     # = gui + voice + windows + documents + browser
+python -m playwright install chromium   # optional: interactive browser automation
 ```
-*(After this one-time installation and model download, JARVIS operates 100% offline with zero cloud dependencies.)*
 
-### 3. Verify Your Environment
+### 3. Automated Non-Destructive Setup (Windows 11)
+Or let the setup wizard create the virtual environment and install everything for you:
+```powershell
+# Full stack + offline English Piper neural voice
+powershell -ExecutionPolicy Bypass -File scripts\setup_windows.ps1 -DownloadEnglishVoice
+
+# Also download the offline Tamil neural voice (ta_IN-valluvar-medium) and Playwright Chromium:
+powershell -ExecutionPolicy Bypass -File scripts\setup_windows.ps1 -IncludePlaywright -DownloadEnglishVoice -DownloadTamilVoice
+```
+*(The wizard runs `pip install -e ".[full,dev]"` inside `.venv`. After this one-time installation and model download, JARVIS operates 100% offline with zero cloud dependencies.)*
+
+> Missing an optional package later? JARVIS never shows a traceback — it tells you which extra to install
+> (for example `pip install -e ".[gui]"`), and `python -m jarvis --doctor` lists exactly what is present.
+
+### 4. Verify Your Environment
 ```powershell
 .\.venv\Scripts\python -m jarvis --doctor
 .\.venv\Scripts\python -m jarvis --self-test
 .\.venv\Scripts\pytest -v jarvis/tests
 ```
 
-### 4. Launch JARVIS
+### 5. Launch JARVIS
 ```powershell
 # Launch the PySide6 Dark Desktop HUD (console attached)
 scripts\run_jarvis.bat

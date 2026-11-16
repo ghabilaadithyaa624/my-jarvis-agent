@@ -3,7 +3,10 @@
 # Target: Intel Core i5-13420H | NVIDIA RTX 3050 6GB VRAM | 16GB RAM | NVMe
 # ============================================================================
 param(
+    # Kept for backwards compatibility: the voice stack is part of the `full` extra,
+    # so it is always installed. Use the download switches to fetch Piper models.
     [switch]$IncludeVoice = $true,
+    # Also download the Chromium binary used by Playwright automation (~150 MB).
     [switch]$IncludePlaywright = $false,
     [switch]$DownloadEnglishVoice = $false,
     [switch]$DownloadTamilVoice = $false
@@ -56,20 +59,22 @@ if (-not (Test-Path $VenvDir)) {
 $PipExe = Join-Path $VenvDir "Scripts\pip.exe"
 $PyExe  = Join-Path $VenvDir "Scripts\python.exe"
 
-Write-Host "[*] Upgrading pip and installing core + Windows 11 + PySide6 GUI dependencies..." -ForegroundColor Cyan
+Write-Host "[*] Upgrading pip and installing JARVIS with the full Windows 11 stack..." -ForegroundColor Cyan
+Write-Host "     extras: full = gui + voice + windows + documents + browser, plus dev tooling" -ForegroundColor DarkCyan
 & $PyExe -m pip install --upgrade pip
-& $PipExe install -r requirements.txt
-& $PipExe install -e . --no-deps
+& $PipExe install -e ".[full,dev]"
 
-if ($IncludeVoice) {
-    Write-Host "[*] Installing local offline voice stack (faster-whisper, sounddevice, openwakeword, piper-tts, pyttsx3)..." -ForegroundColor Cyan
-    & $PipExe install faster-whisper sounddevice openwakeword piper-tts pyttsx3
+if (-not $IncludeVoice) {
+    Write-Host "[WARN] -IncludeVoice is deprecated: the voice stack ships in the 'full' extra and is always installed." -ForegroundColor Yellow
 }
 
 if ($IncludePlaywright) {
-    Write-Host "[*] Installing Playwright and local Chromium browser..." -ForegroundColor Cyan
-    & $PipExe install playwright pytest
+    Write-Host "[*] Downloading the local Chromium binary used by Playwright..." -ForegroundColor Cyan
     & $PyExe -m playwright install chromium
+}
+else {
+    Write-Host "[OK] Playwright Python package installed. To enable interactive browser automation run:" -ForegroundColor DarkCyan
+    Write-Host "     .venv\Scripts\python -m playwright install chromium" -ForegroundColor DarkCyan
 }
 
 # 5. Optional One-Time Offline Piper Neural Voice Downloads (never overwrites existing models)
